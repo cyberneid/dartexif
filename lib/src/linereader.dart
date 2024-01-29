@@ -13,10 +13,10 @@ class LineReader {
     String s;
 
     if (n < _buffer.length) {
-      s = utf8.decode(_buffer.sublist(0, n));
+      s = utf8.decode(_buffer.sublist(0, n), allowMalformed: true);
       _buffer.removeRange(0, n);
     } else {
-      s = utf8.decode(_buffer);
+      s = utf8.decode(_buffer, allowMalformed: true);
       _buffer.clear();
     }
 
