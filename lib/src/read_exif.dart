@@ -10,6 +10,8 @@ import 'package:exif/src/heic.dart';
 import 'package:exif/src/linereader.dart';
 import 'package:exif/src/reader.dart';
 import 'package:exif/src/util.dart';
+import 'package:xml/xml.dart';
+import 'package:xml/xpath.dart';
 
 int _incrementBase(List<int> data, int base) {
   return (data[base + 2]) * 256 + (data[base + 3]) + 2;
@@ -121,6 +123,30 @@ ExifData readExifFromFileReader(FileReader f,
 
   return ExifData(
       hdr.tags.map((key, value) => MapEntry(key, value.tag)), hdr.warnings);
+}
+
+List<String> getXMPKeywords(Map<String, IfdTag> data) {
+  List<String> tagList = [];
+
+  if (data.containsKey('Image ApplicationNotes')) {
+    // print('File has Image ApplicationNotes');
+
+    IfdTag tag = data['Image ApplicationNotes']!;
+
+    // print(tag.printable);
+    final document = XmlDocument.parse(tag.printable);
+    // print(document.toString());
+
+    final tags = document.xpath('//rdf:Bag/rdf:li');
+    // print(tags);
+
+    for (final tag in tags) {
+      // print(tag.innerText);
+      tagList.add(tag.innerText);
+    }
+  }
+
+  return tagList;
 }
 
 String _ifdNameOfIndex(int index) {
