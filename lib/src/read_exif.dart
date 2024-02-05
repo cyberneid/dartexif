@@ -138,7 +138,7 @@ List<String> getXMPKeywords(Map<String, IfdTag> data) {
     // print(document.toString());
 
 
-    final tags = document.xpath('//rdf:Bag/rdf:li/text()');
+    final tags = document.xpath('//dc:subject//rdf:Bag/rdf:li/text()');
     // print(tags);
 
     for (final tag in tags) {
