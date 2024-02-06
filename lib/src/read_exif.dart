@@ -150,6 +150,31 @@ List<String> getXMPKeywords(Map<String, IfdTag> data) {
   return tagList;
 }
 
+String getXMPDescription(Map<String, IfdTag> data) {
+  List<String> tagList = [];
+
+  if (data.containsKey('Image ApplicationNotes')) {
+    // print('File has Image ApplicationNotes');
+
+    IfdTag tag = data['Image ApplicationNotes']!;
+
+    // print(tag.printable);
+    final document = XmlDocument.parse(tag.printable);
+    // print(document.toString());
+
+
+    final tags = document.xpath('//dc:description/rdf:Alt/rdf:li/text()');
+    // print(tags);
+
+    for (final tag in tags) {
+      // print(tag.innerText);
+      tagList.add(tag.value!);
+    }
+  }
+
+  return tagList.first;
+}
+
 String _ifdNameOfIndex(int index) {
   if (index == 0) {
     return 'Image';
