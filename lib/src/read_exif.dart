@@ -150,7 +150,7 @@ List<String> getXMPKeywords(Map<String, IfdTag> data) {
   return tagList;
 }
 
-String getXMPDescription(Map<String, IfdTag> data) {
+String? getXMPDescription(Map<String, IfdTag> data) {
   List<String> tagList = [];
 
   if (data.containsKey('Image ApplicationNotes')) {
@@ -172,7 +172,12 @@ String getXMPDescription(Map<String, IfdTag> data) {
     }
   }
 
-  return tagList.first;
+  if(tagList.isEmpty) {
+    return null;
+  }
+  else {
+    return tagList.first;
+  }
 }
 
 String _ifdNameOfIndex(int index) {

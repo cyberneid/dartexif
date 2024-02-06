@@ -25,7 +25,7 @@ Future main(List<String> arguments) async {
       print("${entry.key}: ${entry.value}");
     }
 
-    String description = getXMPDescription(data);
+    String? description = getXMPDescription(data);
     print(description);
 
   }
