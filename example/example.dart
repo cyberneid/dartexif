@@ -17,13 +17,15 @@ Future main(List<String> arguments) async {
       return;
     }
 
+    for (final entry in data.entries) {
+      print("${entry.key}: ${entry.value}");
+    }
+
     List<String> tagList = getXMPKeywords(data);
     print(tagList.toString());
 
 
-    for (final entry in data.entries) {
-      print("${entry.key}: ${entry.value}");
-    }
+
 
     String? description = getXMPDescription(data);
     print(description);

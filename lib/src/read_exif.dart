@@ -133,11 +133,7 @@ List<String> getXMPKeywords(Map<String, IfdTag> data) {
 
     IfdTag tag = data['Image ApplicationNotes']!;
 
-    // print(tag.printable);
     final document = XmlDocument.parse(tag.printable);
-    // print(document.toString());
-
-
     final tags = document.xpath('//dc:subject//rdf:Bag/rdf:li/text()');
     // print(tags);
 
@@ -145,6 +141,7 @@ List<String> getXMPKeywords(Map<String, IfdTag> data) {
       // print(tag.innerText);
       tagList.add(tag.value!);
     }
+
   }
 
   return tagList;
@@ -230,6 +227,17 @@ void _parseXmpTags(FileReader f, ExifHeader hdr) {
 
       if (xmlStarted) {
         xmpString += line;
+        final closeTag = xmpString.indexOf('</x:xmpmeta>');
+
+        if (closeTag != -1) {
+          // printf('** XMP found closing tag at line position %s', [close_tag]);
+          int lineOffset = 0;
+          if (openTag != -1) {
+            lineOffset = openTag;
+          }
+          xmpString = xmpString.substring(0, (closeTag - lineOffset) + 12);
+          xmlFinished = true;
+        }
       }
 
       if (xmlFinished) {
