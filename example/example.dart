@@ -24,11 +24,8 @@ Future main(List<String> arguments) async {
     List<String> tagList = getXMPKeywords(data);
     print(tagList.toString());
 
-
-
-
     String? description = getXMPDescription(data);
-    print(description);
+    print("description: $description");
 
   }
 }

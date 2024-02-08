@@ -206,36 +206,22 @@ void _parseXmpTags(FileReader f, ExifHeader hdr) {
       String line = reader.readLine();
       if (line.isEmpty) break;
 
-      final openTag = line.indexOf('<x:xmpmeta');
-      final closeTag = line.indexOf('</x:xmpmeta>');
+      int openTag = line.indexOf('<x:xmpmeta');
+      int closeTag = line.indexOf('</x:xmpmeta>');
 
       if (openTag != -1) {
         xmlStarted = true;
         line = line.substring(openTag);
-        // printf('** XMP found opening tag at line position %s', [open_tag]);
-      }
-
-      if (closeTag != -1) {
-        // printf('** XMP found closing tag at line position %s', [close_tag]);
-        int lineOffset = 0;
-        if (openTag != -1) {
-          lineOffset = openTag;
-        }
-        line = line.substring(0, (closeTag - lineOffset) + 12);
-        xmlFinished = true;
       }
 
       if (xmlStarted) {
         xmpString += line;
-        final closeTag = xmpString.indexOf('</x:xmpmeta>');
+        openTag = xmpString.indexOf('<x:xmpmeta');
+        closeTag = xmpString.indexOf('</x:xmpmeta>');
 
         if (closeTag != -1) {
-          // printf('** XMP found closing tag at line position %s', [close_tag]);
-          int lineOffset = 0;
-          if (openTag != -1) {
-            lineOffset = openTag;
-          }
-          xmpString = xmpString.substring(0, (closeTag - lineOffset) + 12);
+
+          xmpString = xmpString.substring(openTag, closeTag + 12);
           xmlFinished = true;
         }
       }
